@@ -1,9 +1,9 @@
 import Auth from '../../network/auth';
-import CheckUserAuth from './check-user-auth';
+// import CheckUserAuth from './check-user-auth';
 
 const Register = {
   async init() {
-    CheckUserAuth.checkLoginState();
+    // CheckUserAuth.checkLoginState();
 
     this._initialListener();
   },
@@ -30,15 +30,24 @@ const Register = {
       console.log('formData');
       console.log(formData);
 
+      // try {
+      //   const response = await Auth.register({
+      //     name: formData.name,
+      //     email: formData.email,
+      //     password: formData.password,
+      //   });
+      //   window.alert('Registered a new user');
+
+      //   this._goToLoginPage();
       try {
         const response = await Auth.register({
-          name: formData.name,
           email: formData.email,
           password: formData.password,
         });
+        await Auth.updateProfile(response.user, {
+          displayName: formData.name,
+        });
         window.alert('Registered a new user');
-
-        this._goToLoginPage();
       } catch (error) {
         console.error(error);
       }

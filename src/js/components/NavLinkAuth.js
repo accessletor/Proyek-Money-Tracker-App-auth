@@ -1,9 +1,10 @@
 import LitWithoutShadowDom from './base/LitWithoutShadowDom';
 import { html } from 'lit';
 import { msg, updateWhenLocaleChanges } from '@lit/localize';
-import Utils from '../utils/utils';
-import Config from '../config/config';
+// import Utils from '../utils/utils';
+// import Config from '../config/config';
 import CheckUserAuth from '../pages/auth/check-user-auth';
+import Auth from '../network/auth';
 
 class NavLinkAuth extends LitWithoutShadowDom {
   constructor() {
@@ -40,9 +41,15 @@ class NavLinkAuth extends LitWithoutShadowDom {
 
   _userLogOut(event) {
     event.preventDefault();
-    Utils.destroyUserToken(Config.USER_TOKEN_KEY);
+    // Utils.destroyUserToken(Config.USER_TOKEN_KEY);
 
-    CheckUserAuth.checkLoginState();
+    // CheckUserAuth.checkLoginState();
+    try {
+      const response = Auth.logout();
+      CheckUserAuth.checkLoginState();
+    } catch (error) {
+      console.error(error);
+    }
   }
 }
 

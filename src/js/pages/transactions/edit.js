@@ -1,9 +1,9 @@
-import CheckUserAuth from '../auth/check-user-auth';
+// import CheckUserAuth from '../auth/check-user-auth';
 import Transactions from '../../network/transactions';
 
 const Edit = {
   async init() {
-    CheckUserAuth.checkLoginState();
+    // CheckUserAuth.checkLoginState();
 
     this._initialUI();
     await this._initialData();
@@ -54,10 +54,16 @@ const Edit = {
       alert('Data dengan id yang dicari tidak ditemukan');
       return;
     }
+    // try {
+    //   const response = await Transactions.getById(transactionId);
+    //   const responseRecords = response.data.results;
+    //   this._populateTransactionToForm(responseRecords);
+    // } catch (error) {
+    //   console.error(error);
+    // }
     try {
       const response = await Transactions.getById(transactionId);
-      const responseRecords = response.data.results;
-      this._populateTransactionToForm(responseRecords);
+      this._populateTransactionToForm(response);
     } catch (error) {
       console.error(error);
     }
@@ -87,8 +93,9 @@ const Edit = {
 
       try {
         const response = await Transactions.update({
-          id: this._getTransactionId(),
           ...formData,
+          id: this._getTransactionId(),
+          evidence: formData.evidence.name,
         });
         window.alert(`Transaction with id ${this._getTransactionId()} has been edited`);
         this._goToDashboardPage();

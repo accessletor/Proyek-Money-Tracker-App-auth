@@ -1,9 +1,9 @@
-import CheckUserAuth from '../auth/check-user-auth';
+// import CheckUserAuth from '../auth/check-user-auth';
 import Transactions from '../../network/transactions';
 
 const Add = {
   async init() {
-    CheckUserAuth.checkLoginState();
+    // CheckUserAuth.checkLoginState();
 
     this._initialUI();
     this._initialListener();
@@ -54,8 +54,18 @@ const Add = {
       console.log('formData');
       console.log(formData);
 
+      // try {
+      //   const response = await Transactions.store(formData);
+      //   window.alert('New transaction added successfully');
+      //   this._goToDashboardPage();
+      // } catch (error) {
+      //   console.error(error);
+      // }
       try {
-        const response = await Transactions.store(formData);
+        const response = await Transactions.store({
+          ...formData,
+          evidence: formData.evidence.name,
+        });
         window.alert('New transaction added successfully');
         this._goToDashboardPage();
       } catch (error) {

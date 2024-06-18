@@ -1,19 +1,26 @@
-import CheckUserAuth from './auth/check-user-auth';
+// import CheckUserAuth from './auth/check-user-auth';
 import Transactions from '../network/transactions';
 
 const Dashboard = {
   async init() {
-    CheckUserAuth.checkLoginState();
+    // CheckUserAuth.checkLoginState();
 
     await this._initialData();
     this._initialListener();
   },
 
   async _initialData() {
+    // try {
+    //   const response = await Transactions.getAll();
+    //   const responseRecords = response.data.results;
+    //   this._userTransactionsHistory = responseRecords.transactionsHistory;
+    //   this._populateTransactionsRecordToTable(this._userTransactionsHistory);
+    //   this._populateTransactionsDataToCard(this._userTransactionsHistory);
+    // } catch (error) {
+    //   console.error(error);
+    // }
     try {
-      const response = await Transactions.getAll();
-      const responseRecords = response.data.results;
-      this._userTransactionsHistory = responseRecords.transactionsHistory;
+      this._userTransactionsHistory = await Transactions.getAll();
       this._populateTransactionsRecordToTable(this._userTransactionsHistory);
       this._populateTransactionsDataToCard(this._userTransactionsHistory);
     } catch (error) {
@@ -145,7 +152,7 @@ const Dashboard = {
         <td>${transactionRecord.type === 'income' ? 'Pemasukan' : 'Pengeluaran'}</td>
         <td>${transactionRecord.name}</td>
         <td>${transactionRecord.amount}</td>
-        <td>${transactionRecord.date}</td>
+        <td>${transactionRecord.date.toDate().toDateString()}</td>
         <td>
           <div class="d-flex justify-content-center align-items-center gap-2">
             <a class="btn btn-sm btn-primary" href="#"
